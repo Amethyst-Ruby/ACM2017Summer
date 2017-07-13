@@ -81,7 +81,7 @@ In the second example the first group consists of one person, it is seated at th
 
 #include<iostream>
 using namespace std;
-int n,a,b;
+int n,a,b;   //这里要写成全局变量，vj才能过，cf能过。
 int  main()
 {
       
@@ -97,9 +97,48 @@ int  main()
                         if(t[i]==1)
                         {
                                if(a!=0)  {a--;}
-                               else if(b!=0)	 {b--;panduan++;}
+                               else if(b!=0)	 {b--;panduan++;}    //原先用的continue不好使，有严重隐含语法错误。
                                else if(panduan!=0) {panduan--;}
                                else sum++;
+                        }
+                        if(t[i]==2)
+                        {
+                              if(b!=0){b--;continue;}
+                              if(b==0) {sum=sum+2;continue;}
+                        }
+                }
+                cout<<sum<<endl;
+        }
+}
+
+ 
+下面的是错误的等待修改。
+#include<iostream>
+using namespace std;
+int  main()
+{
+        int n,a,b;
+        while(cin>>n>>a>>b)
+        {
+                int t[n];
+                for(int i=0;i<n;i++)
+                        cin>>t[i];
+                double panduan=1;
+                int sum=0;
+                for(int i=0;i<n;i++)
+                {
+                        if(t[i]==1)
+                        {
+                               if(a!=0)  {a--;continue;}
+                               else
+                              {
+                                      if(panduan==0.5) {panduan=1;continue;}
+                                      if(b!=0)
+                                       {
+                                               if(panduan==1)    {b--;panduan=0.5;continue;}
+                                       }
+                                       if(b==0) {sum=sum+1;continue;}
+                              }
                         }
                         if(t[i]==2)
                         {
