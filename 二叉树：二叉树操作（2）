@@ -1,0 +1,166 @@
+二叉树：二叉树操作（2）
+  Time Limit:1000MS     Memory Limit:131072KB     64bit IO Format:%lld & %llu  
+
+Submit
+ 
+Status
+ 
+
+ use MathJax to parse formulas
+
+
+Description
+
+
+
+用二叉树的带虚结点表示的前序遍历序可以唯一的确定一棵二叉树。
+
+
+
+Input
+
+
+
+输入包含多组数据。 
+ 每行是一棵二叉树的带虚结点（#）表示的前序遍历序串，长度不超过2000。每个结点为一个字符。
+
+
+
+Output
+
+
+
+对每行输入，输出对应二叉树的中序遍历序（不含虚结点）、后序遍历序（不含虚结点）和层次遍历序（不含虚结点）。 
+ 每棵二叉树的输出占一行，中序遍历序、后序遍历序和层次遍历序之间用一个空格隔开。
+
+
+
+Sample Input
+
+ab##c##
+#
+ab###
+
+
+
+
+Sample Output
+
+bac bca abc
+
+ba ba ab
+
+
+
+
+
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <algorithm>
+#include <string>
+#include <cstring>
+#include <cmath>
+#include <vector>
+#include <stack>
+#include <queue>
+#define INF 0x3f3f3f3f
+
+using namespace std;
+
+char a[2005];    //应用全局变量进行数组输入，建树。
+int mark;
+
+struct tree
+{
+	char data;
+	tree *lchild,*rchild;
+};
+
+void Creat_Tree_By_PreOrder(tree* &T)   //这里一直不懂！！求助大神，这是指针的引用嘛？？？void cre(tree *T) 
+//对于指针T本身来说是传值的，修改了T不会影响到实参变化。
+//void cre(tree *&T)
+//这里T是实参的引用，T的修改就相当于实际参数的修改。
+//你需要返回创建的树应该用第二种方式
+{
+	if(a[mark] == '#')
+	{
+		T = NULL;
+		mark++;   //要++的
+	}
+	else 
+	{
+		T=new tree;//动态开辟
+		T->data=a[mark];
+		mark++;
+		
+		Creat_Tree_By_PreOrder(T->lchild);//递归，用栈的思想去建树。
+		Creat_Tree_By_PreOrder(T->rchild);
+	}
+}
+
+void Display(tree *T)
+{
+	if(T->data!='#')
+	cout<<T->data;
+}
+
+void Inorder_Traversal(tree *T)
+{
+	if(T!=NULL)
+	{
+		Inorder_Traversal(T->lchild);
+		Display(T);
+		Inorder_Traversal(T->rchild); 
+	}
+}
+
+void Postorder_Traversal(tree *T)
+{
+	if(T!=NULL)
+	{
+		Postorder_Traversal(T->lchild);
+		Postorder_Traversal(T->rchild);
+		Display(T);
+	}
+} 
+
+void Level_Traversal(tree *T)
+{
+	if(T!=NULL)
+	{
+		tree *N=T;
+		queue< tree* >q;
+		q.push(N);
+		while(!q.empty())
+		{
+			N=q.front();
+			cout<<N->data;
+			q.pop();
+			if(N->lchild!=NULL) q.push(N->lchild);
+			if(N->rchild!=NULL) q.push(N->rchild);
+		}
+	}
+}
+
+int main()
+{
+	tree *t;
+	while(scanf("%s",a)!=EOF)
+	{
+		int map=0;
+		mark=0;
+		Creat_Tree_By_PreOrder(t);
+		if(t!=NULL) map=1;
+		
+		Inorder_Traversal(t);
+		if(map) cout<<' ';
+		
+		Postorder_Traversal(t);
+		if(map)cout<<' ';
+		
+		Level_Traversal(t);
+		cout<<endl;
+	}
+	return 0;
+}
