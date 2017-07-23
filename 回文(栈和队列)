@@ -1,0 +1,91 @@
+
+A - 回文(栈和队列)
+  Time Limit:1000MS     Memory Limit:1024000KB     64bit IO Format:%lld & %llu  
+
+Submit
+ 
+Status
+ 
+Practice
+ 
+SDIBT 2643
+ 
+
+ use MathJax to parse formulas
+
+
+Description
+
+
+
+ 假设称正读和反读都相同的字符序列为“回文”，例如，‘abba‘ 和 ‘abcba‘是回文，‘abcde‘ 和 ‘ababab‘ 则不是回文。试写一个算法判别读入的一个以‘@‘为结束符的字符序列是否是“回文”。 
+
+
+
+Input
+
+
+
+abcba
+
+
+
+Output
+
+
+
+是回文
+
+
+
+Sample Input
+
+ababab
+
+
+Sample Output
+
+不是回文
+ 
+ 
+解题思路 ：把符号压到栈中，然后用两个字符数组去保存，一个正序，一个倒序，如果是回文序列的话，那么正序=倒序！！
+ 
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include <cmath>
+using namespace std;
+int p,q,mark,m;
+int main()
+{
+        stack<char>s;
+        char c;
+        char c1[100];
+        char c2[100];
+        int mark=0;
+        while(cin>>c)
+        {
+              if(c=='@') break;
+              s.push(c);
+              c1[mark++]=c;
+        }
+        int mark1=0;
+        while(s.empty()==0)
+        {
+                c2[mark1++]=s.top();
+                s.pop();
+        }
+        bool cunzai=true;
+        for(int i=0;i<mark;i++)
+        {
+                if(c1[i]!=c2[i])  {cunzai = false;break;}
+        }
+        if(cunzai==false ) cout<<"不是回文\n";
+        else cout<<"是回文\n";
+        return 0;
+}
