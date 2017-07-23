@@ -1,0 +1,88 @@
+
+J - Stripies
+  Time Limit:1000MS     Memory Limit:30000KB     64bit IO Format:%I64d & %I64u  
+
+Submit
+ 
+Status
+ 
+Practice
+ 
+POJ 1862
+ 
+
+ use MathJax to parse formulas
+
+
+Description
+
+
+Our chemical biologists have invented a new very useful form of life called stripies (in fact, they were first called in Russian - polosatiki, but the scientists had to invent an English name to apply for an international patent). The stripies are transparent amorphous amebiform creatures that live in flat colonies in a jelly-like nutrient medium. Most of the time the stripies are moving. When two of them collide a new stripie appears instead of them. Long observations made by our scientists enabled them to establish that the weight of the new stripie isn't equal to the sum of weights of two disappeared stripies that collided; nevertheless, they soon learned that when two stripies of weights m1 and m2 collide the weight of resulting stripie equals to 2*sqrt(m1*m2). Our chemical biologists are very anxious to know to what limits can decrease the total weight of a given colony of stripies. 
+You are to write a program that will help them to answer this question. You may assume that 3 or more stipies never collide together. 
+
+
+
+Input
+
+
+The first line of the input contains one integer N (1 <= N <= 100) - the number of stripies in a colony. Each of next N lines contains one integer ranging from 1 to 10000 - the weight of the corresponding stripie. 
+
+
+Output
+
+
+The output must contain one line with the minimal possible total weight of colony with the accuracy of three decimal digits after the point. 
+
+
+Sample Input
+
+3
+72
+30
+50
+
+
+
+Sample Output
+
+120.000
+ 
+解题思路：大的数就让他先开方，这样获得的数会最小！
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include <cmath>
+using namespace std;
+
+double a[105],sum;
+
+bool com(double a,double b)
+{
+        return a>b;
+}
+
+double jisuan(double a,double b)
+{
+        return 2.0*sqrt(a*b);
+}
+
+int main()
+{
+        int n;
+        cin>>n;
+        for(int i=0;i<n;i++)
+                cin>>a[i];
+        sort(a,a+n,com);
+        sum=a[0];
+        for(int i=0;i<n-1;i++)
+        {
+                sum=jisuan(sum,a[i+1]);
+        }
+        printf("%.3f\n",sum);
+        return 0;
+}
