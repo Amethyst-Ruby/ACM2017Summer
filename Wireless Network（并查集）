@@ -1,0 +1,132 @@
+
+E - 并查集：简单应用（2）poj2236
+  Time Limit:10000MS     Memory Limit:65536KB     64bit IO Format:%I64d & %I64u  
+
+Submit
+ 
+Status
+ 
+
+ use MathJax to parse formulas
+
+
+Description
+
+
+An earthquake takes place in Southeast Asia. The ACM (Asia Cooperated Medical team) have set up a wireless network with the lap computers, but an unexpected aftershock attacked, all computers in the network were all broken. The computers are repaired one by one, and the network gradually began to work again. Because of the hardware restricts, each computer can only directly communicate with the computers that are not farther than d meters from it. But every computer can be regarded as the intermediary of the communication between two other computers, that is to say computer A and computer B can communicate if computer A and computer B can communicate directly or there is a computer C that can communicate with both A and B. 
+
+In the process of repairing the network, workers can take two kinds of operations at every moment, repairing a computer, or testing if two computers can communicate. Your job is to answer all the testing operations. 
+
+
+
+Input
+
+
+The first line contains two integers N and d (1 <= N <= 1001, 0 <= d <= 20000). Here N is the number of computers, which are numbered from 1 to N, and D is the maximum distance two computers can communicate directly. In the next N lines, each contains two integers xi, yi (0 <= xi, yi <= 10000), which is the coordinate of N computers. From the (N+1)-th line to the end of input, there are operations, which are carried out one by one. Each line contains an operation in one of following two formats: 
+1. "O p" (1 <= p <= N), which means repairing computer p. 
+2. "S p q" (1 <= p, q <= N), which means testing whether computer p and q can communicate. 
+
+The input will not exceed 300000 lines. 
+
+
+
+Output
+
+
+For each Testing operation, print "SUCCESS" if the two computers can communicate, or "FAIL" if not. 
+
+
+Sample Input
+
+4 1
+0 1
+0 2
+0 3
+0 4
+O 1
+O 2
+O 4
+S 1 4
+O 3
+S 1 4
+
+
+
+Sample Output
+
+FAIL
+SUCCESS
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include<vector>
+#include <cmath>
+#include<string>
+#define N 1005
+using namespace std;
+int d;
+bool computer[N];
+
+struct node
+{
+    int pre;
+    int x, y;
+}p[N];
+
+int find(int x)
+{
+    return x == p[x].pre ? x : find(p[x].pre);//查树的根
+}
+
+void join(const node p1,  const node p2)
+{
+    int r1, r2;
+    r1 = find(p1.pre);
+    r2 = find(p2.pre);
+    if(r1 != r2)
+        if((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) <= d * d)    //如果两台电脑距离在限制范围之内，说明能联通上，就把他俩放在一个集合里。
+            p[r2].pre = r1;
+}
+
+int main()
+{
+            int num;
+            char c;
+
+            int ok;
+            int from, to;
+            scanf("%d%d", &num, &d);
+            for(int i = 1; i <= num; i++)
+                p[i].pre = i;
+            memset(computer, false, sizeof(computer));   //所有电脑默认为坏的
+            for(int i = 1; i <= num; i++)
+                scanf("%d%d", &p[i].x, &p[i].y);
+            while(scanf("\n%c", &c) != EOF)   //scanf里的空格或者\n是过滤掉空格，制表符，回车的。
+            {
+                if(c == 'O')
+                {
+                    scanf("%d", &ok);
+                    computer[ok] = true;
+                    for(int i = 1; i <= num; ++i)
+                        if(computer[i] && i != ok)      //就是找一台好了的电脑，然后让刚修好的这台电脑跟修好版本的集合有个联系。
+                            join(p[i], p[ok]);//比方说刚修完第一台电脑，而C1&&1=1,这就不行了，然后修第二台电脑，发现i=1是true&&1!=2,那么把第二台好电脑放到集合中。
+                }
+                else
+                {
+                    scanf("%d%d", &from, &to);
+                    if(find(from) == find(to))
+                        printf("SUCCESS\n");      //这个就是查两个电脑的根节点，如果一样的话就说明两台电脑可以间接的相联系，说明在一个集合里。
+                    else
+                        printf("FAIL\n");
+                }
+            }
+            return 0;
+}
