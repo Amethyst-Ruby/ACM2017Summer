@@ -1,0 +1,90 @@
+C - 括号匹配(栈和队列)
+  Time Limit:1000MS     Memory Limit:131072KB     64bit IO Format:%lld & %llu  
+
+Submit
+ 
+Status
+ 
+Practice
+ 
+SDIBT 2639
+ 
+
+ use MathJax to parse formulas
+
+
+Description
+
+
+
+假设一个算术表达式中可以包含三种括号：圆括号“(”和“)”，方括号“[”和“]”和花括号“{”和“ ”，且这三种括号可按任意的次序嵌套使用（如：…[…{… …[…]…]…[…]…(…)…)。编写判别给定表达式中所含括号是否正确配对出现的算法。输出结果YES 或者 NO。
+
+
+
+Input
+
+
+
+5+{[2X5]+2}
+
+
+
+Output
+
+
+
+YES
+
+
+
+Sample Input
+
+8-[{2+7]}
+
+
+Sample Output
+
+NO
+
+解题思路：如果是左括号就入栈，如果是右括号 就要判断他是不是栈顶元素相应的括号，如果是，就出栈，最后检查栈是否为空就好。
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include <cmath>
+using namespace std;
+char zh(char a)   //这里我写了一个转换的函数，清晰！！
+{
+        if(a==']') return '[';
+        else if(a==')') return '(';
+        else if(a=='}') return '{';
+}
+int main()
+{
+        string str;
+        stack < char > s;
+        getline(cin,str);
+        char l[100],r[100];
+        int l1 = 0,r1 = 0;
+        for(int i=0;i<str.size();i++)
+        {
+                if(str[i]=='{'||str[i]=='['||str[i]=='(')
+                {
+                        s.push(str[i]);
+                }
+                else if(str[i]=='}'||str[i]==']'||str[i]==')')
+                {
+                        if(s.empty()) goto RL;
+                        else if(s.top()==zh(str[i]) )    s.pop();
+                }
+        }
+        if(s.empty()) {cout<<"YES\n";return 0;}
+        else {cout<<"NO\n";return 0;}
+
+        RL: cout<<"NO\n";
+        return 0;
+}
