@@ -1,0 +1,140 @@
+
+A - 二叉树：二叉树操作（1）
+  Time Limit:1000MS     Memory Limit:65536KB     64bit IO Format:%lld & %llu  
+
+Description
+
+
+
+根据给定的字符串生成二叉树并前序、中序、后序此二叉树。
+
+
+
+
+
+Input
+
+
+
+给定一字符串，其中#表示空。
+
+例：上图输入为
+
+HDB#A##C##G#FE###
+
+
+
+Output
+
+
+
+分别输出此二叉树前序、中序和后序。
+
+
+
+Sample Input
+
+HDB#A##C##G#FE###
+
+
+Sample Output
+
+HDBACGFE
+BADCHGEF
+ABCDEFGH
+
+
+Hint
+
+
+
+做完的同学还可以线索化二叉树后再进行先序、中序和后序遍历。
+
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include<vector>
+#include <cmath>
+#include<string>
+using namespace std;
+typedef struct BiTNode
+{
+    char data;
+    struct BiTNode *lchild,*rchild;
+} BiTNode,*BiTree;
+int CreateBiTree(BiTree &T)
+{
+    char data;
+    scanf("%c",&data);
+    if(data == '#')
+    {
+        T = NULL;
+    }
+    else
+    {
+        T = (BiTree)malloc(sizeof(BiTNode));
+
+        T->data = data;
+        CreateBiTree(T->lchild);
+        CreateBiTree(T->rchild);
+    }
+    return 0;
+}
+
+void Visit(BiTree T)
+{
+    if(T->data != '#')
+    {
+        printf("%c",T->data);
+    }
+}
+
+void PreOrder(BiTree T)
+{
+    if(T != NULL)
+    {
+        Visit(T);
+        PreOrder(T->lchild);
+        PreOrder(T->rchild);
+    }
+}
+
+void InOrder(BiTree T)
+{
+    if(T != NULL)
+    {
+
+        InOrder(T->lchild);
+        Visit(T);
+        InOrder(T->rchild);
+    }
+}
+
+void PostOrder(BiTree T)
+{
+    if(T != NULL)
+    {
+        PostOrder(T->lchild);
+        PostOrder(T->rchild);
+        Visit(T);
+    }
+}
+int main()
+{
+    BiTree T;
+    CreateBiTree(T);
+    PreOrder(T);
+    cout<<endl;
+    InOrder(T);
+    cout<<endl;
+    PostOrder(T);
+    cout<<endl;
+}
