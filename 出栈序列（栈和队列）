@@ -1,0 +1,110 @@
+
+B - 出栈序列（栈和队列）
+  Time Limit:1000MS     Memory Limit:131072KB     64bit IO Format:%lld & %llu  
+
+Submit
+ 
+Status
+ 
+Practice
+ 
+SDIBT 2669
+ 
+
+ use MathJax to parse formulas
+
+
+Description
+
+
+
+已知自然数1,2,...,N(1≤N≤10000)依次入栈（即a<b当且仅当a先于b入栈），问：序列C1,C2,...,CN是否为可能的出栈序列。
+ 　　例如：N=5时，3,4,2,1,5是一个可能的出栈序列，因为其可以按如下操作获得：push 1,push 2,push 3,pop,push 4,pop,pop,pop,push 5,pop
+
+
+
+Input
+
+
+
+　输入数据包含若干组测试样例。
+ 　　每组测试样例的第一行为整数N(1≤N≤10000)；
+ 　　第二行为N个正整数，以空格隔开，为出栈序列；
+ 　　输入数据的末尾以一个0表示输入的结束。
+
+
+
+Output
+
+
+
+对于每组测试样例，输出结果为一行字符串。
+ 　　如给出的序列是可能的出栈序列，则输出"Yes"，否则输出"No"。
+ 　　注意：区分大小写，引号本身不输出。
+
+
+
+Sample Input
+
+5
+3 4 2 1 5
+5
+3 5 1 4 2
+0
+
+
+
+Sample Output
+
+Yes
+No
+
+
+ 
+解题思路 
+： 看栈顶元素是不是第一个数字，如果不是，接着压新的数字，如果是，出栈并且循环检查栈顶元素，检查数组第二个元素是不是栈顶元素，循环寻找。
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include <cmath>
+using namespace std;
+int main()
+{
+        int n;
+        while(cin>>n)
+        {
+                if(n==0) break;
+
+                stack < int > s;
+                int a[10005];
+
+                for(int i=0;i<n;i++)
+                {
+                        cin>>a[i];
+                }
+                int count = 0;
+                s.push(0);
+                for(int i=1;i<=n;i++)
+                {
+                        s.push(i);
+                        RL:
+                        if(s.top()==a[count]&&count!=n)//这个地方我用了一个条件，如果不用的话，栈会爆炸！！
+                        {
+                                s.pop();
+                                if(count!=n+1)  count++;
+                                else break;
+                                goto RL;
+                        }
+                }
+
+                if(s.top()==0) cout<<"Yes\n";
+                else cout<<"No\n";
+
+        }
+        return 0;
+}
