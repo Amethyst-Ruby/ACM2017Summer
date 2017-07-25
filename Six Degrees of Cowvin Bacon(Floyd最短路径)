@@ -69,7 +69,7 @@ void initialization()
             map[i][j]=INF;
         }
         map[i][i]=0;
-    }
+    }           //这里我原先写的有问题，不知道怎么改得。
 }
 
 int main()
@@ -81,10 +81,10 @@ int main()
                 int m=M;
                 while(m--)
                 {
-                        scanf("%d",&shu);
-                        for(int i = 0;i < shu;i++)
+                        scanf("%d",&shu);  
+                        for(int i = 0;i < shu;i++)   //i从零开始。
                         {
-                                scanf("%d",&linshi[i]);
+                                scanf("%d",&linshi[i]);   
                         }
                         for(int j=0;j<shu;j++)
                         {
