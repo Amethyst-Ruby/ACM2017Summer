@@ -1,0 +1,84 @@
+hdu2108
+C - 叉积
+Time Limit:1000MS     Memory Limit:32768KB     64bit IO Format:%I64d & %I64u
+Submit
+ 
+Status
+  use MathJax to parse formulas
+Description
+话说上回讲到海东集团推选老总的事情，最终的结果是XHD以微弱优势当选，从此以后，“徐队”的称呼逐渐被“徐总”所取代，海东集团（HDU）也算是名副其实了。 
+创业是需要地盘的，HDU向钱江肉丝高新技术开发区申请一块用地，很快得到了批复，据说这是因为他们公司研发的“海东牌”老鼠药科技含量很高，预期将占全球一半以上的市场。政府划拨的这块用地是一个多边形，为了描述它，我们用逆时针方向的顶点序列来表示，我们很想了解这块地的基本情况，现在请你编程判断HDU的用地是凸多边形还是凹多边形呢？ 
+ 
+Input
+输入包含多组测试数据，每组数据占2行，首先一行是一个整数n，表示多边形顶点的个数，然后一行是2×n个整数，表示逆时针顺序的n个顶点的坐标（xi,yi），n为0的时候结束输入。 
+ 
+Output
+对于每个测试实例，如果地块的形状为凸多边形，请输出“convex”,否则输出”concave”，每个实例的输出占一行。 
+ 
+Sample Input
+4
+0 0 1 0 1 1 0 1
+0 
+ 
+Sample Output
+convex
+
+
+海东集团终于顺利成立了！后面的路，他们会顺顺利利吗？
+欲知后事如何，且听下回分解——
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include<vector>
+#include <cmath>
+using namespace std;
+
+#define INF 0x3f3f3f3f
+#define maxn 1200
+
+
+struct point
+{
+        double x;
+        double y;
+};
+point p[maxn];
+
+double cross(double x1,double y1,double x2,double y2)
+{
+        return x1*y2-x2*y1;
+}
+
+double compare(point a,point b,point c)
+ {
+        return cross((b.x-a.x),(b.y-a.y),(c.x-a.x),(c.y-a.y));
+}
+
+int main()
+{
+        int n;
+        while(scanf("%d",&n),n)
+        {
+                double t;
+                for(int i=0;i<n;i++)
+                {
+                       cin>>p[i].x>>p[i].y;
+                }
+                for(int i=0;i<n;i++)
+                {
+                        t=compare(p[i%n],p[(i+1)%n],p[(i+2)%n]);
+                        if(t<0)  {break;}
+                }
+                if(t>=0) cout<<"convex\n";
+                else cout<<"concave\n";
+        }
+
+}
