@@ -29,6 +29,8 @@ convex
 
 
 
+思路：模模sin西他， 小于零的话就是凹多边形。
+
 #include<iostream>
 #include<algorithm>
 #include<stdio.h>
