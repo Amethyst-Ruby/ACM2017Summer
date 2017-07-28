@@ -1,0 +1,124 @@
+HDU2202
+最大三角形
+
+Time Limit: 5000/2000 MS (Java/Others)    Memory Limit: 32768/32768 K (Java/Others)
+Total Submission(s): 4332    Accepted Submission(s): 1571
+
+
+Problem Description
+老师在计算几何这门课上给Eddy布置了一道题目，题目是这样的：给定二维的平面上n个不同的点，要求在这些点里寻找三个点，使他们构成的三角形拥有的面积最大。
+Eddy对这道题目百思不得其解，想不通用什么方法来解决，因此他找到了聪明的你，请你帮他解决这个题目。
+ 
+
+Input
+输入数据包含多组测试用例，每个测试用例的第一行包含一个整数n，表示一共有n个互不相同的点，接下来的n行每行包含2个整数xi,yi，表示平面上第i个点的x与y坐标。你可以认为：3 <= n <= 50000 而且 -10000 <= xi, yi <= 10000.
+ 
+
+Output
+对于每一组测试数据，请输出构成的最大的三角形的面积，结果保留两位小数。
+每组输出占一行。
+ 
+
+Sample Input
+3
+3 4
+2 6
+3 7
+6
+2 6
+3 9
+2 0
+8 0
+6 6
+7 7
+ 
+
+Sample Output
+1.50
+27.00
+ 
+
+Author
+Eddy
+ 
+
+Recommend
+lcy   |   We have carefully selected several similar problems for you:  2203 1392 1348 2200 2201 
+
+
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include<vector>
+#include <cmath>
+using namespace std;
+
+#define INF 0x3f3f3f3f
+#define maxn 50000+50
+
+struct Node
+{
+    int x;
+    int y;
+}a[maxn],b[maxn];
+//b储存凸包上的点。
+int cmp(Node m,Node n)
+{
+    if(m.x==n.x)
+        return m.y<n.y;
+    return m.x<n.x;
+}
+double Count(Node a,Node b,Node c)
+{
+    double jg=0.5*((a.x*b.y)+(b.x*c.y)+(c.x*a.y)-(a.x*c.y)-(b.x*a.y)-(c.x*b.y));
+    return jg;
+}
+//S=(1/2)*(x1y2*1+x2y3*1+x3y1*1-x1y3*1-x2y1*1-x3y2*1)
+
+int convex(int n) //凸包计算；求出在圆上的点得数量m；和坐标。
+{
+    sort(a,a+n,cmp);
+    int m=0,i,j,k;
+    for(i=0;i<n;i++)
+    {
+        while(m>1&&Count(b[m-1],a[i],b[m-2])<=0)
+            m--;
+        b[m++]=a[i];
+    }
+         k=m;
+    for(i=n-2;i>=0;i--)
+    {
+        while(m>k&&Count(b[m-1],a[i],b[m-2])<=0)
+            m--;
+        b[m++]=a[i];
+    }
+    if(n>1)
+        m--;
+    return m;
+}
+
+int main()
+{
+    int i,j,k,n,m;
+    double  sum=0;
+    while(cin>>n)
+    {
+        for(i=0;i<n;i++)
+            cin>>a[i].x>>a[i].y;
+            sum=0;
+        m=convex(n);
+        for(i=0;i<m;i++)
+            for(j=i+1;j<m;j++)
+                for(k=j+1;k<m;k++)
+                {
+                    sum=max(sum,Count(b[i],b[j],b[k]));
+                }
+        printf("%.2lf\n",sum);
+    }
+    return 0;
+}
