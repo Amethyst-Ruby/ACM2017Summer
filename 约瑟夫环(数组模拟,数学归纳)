@@ -1,0 +1,77 @@
+约瑟夫环（栈和队列）
+
+Time Limit: 1 Sec  Memory Limit: 1000 MB
+Submit: 168  Solved: 93
+[Submit][Status][Discuss]
+Description
+
+题目：n个数字（1,2,3…,n）形成一个圆圈，从数字1开始，每次从这个圆圈中删除第m个数字（第一个为当前数字本身，第二个为当前数字的下一个数字）。
+当一个数字删除后，从被删除数字的下一个继续删除第m个数字。
+求出在这个圆圈中剩下的最后一个数字。
+
+Input
+
+输入：
+
+n=9
+
+m=5
+
+Output
+
+The last one is 8
+Sample Input
+
+9 5
+Sample Output
+
+8
+
+
+下面是自己写的代码,用数组模拟的,调试后发现的规律,原先是从a[1]开始的,发现求余数的时候变成a[0],索性改成a[0],很有灵性;
+
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include<vector>
+#include <cmath>
+using namespace std;
+
+#define INF 0x3f3f3f3f
+#define maxn 30
+
+int main()
+{
+    int a[10000];
+    memset(a,0,sizeof(a));
+    //memset(a,0,sizeof(a));
+    int n;
+    int m;
+    cin>>n;
+    cin>>m;
+    int count = 0;
+    int bushu = 0;
+    for(int i = 0;;i = (i+1) % n)
+    {
+        if(a[i] != 1) bushu ++;
+        if(bushu == m)
+        {
+            a[i] = 1;
+            count ++;
+            bushu = 0;
+        }
+        if(count == n-1 ) break;
+    }
+    for(int i = 0; i < n ;i++)
+    {
+        if(a[i] == 0) cout<<i+1;
+    }
+}
+
+
+下面是用数学归纳做出来的 
