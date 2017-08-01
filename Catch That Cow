@@ -1,0 +1,115 @@
+HDU 2717
+Catch That Cow
+
+
+Problem Description
+Farmer John has been informed of the location of a fugitive cow and wants to catch her immediately. He starts at a point N (0 ≤ N ≤ 100,000) on a number line and the cow is at a point K (0 ≤ K ≤ 100,000) on the same number line. Farmer John has two modes of transportation: walking and teleporting.
+
+* Walking: FJ can move from any point X to the points X - 1 or X + 1 in a single minute
+* Teleporting: FJ can move from any point X to the point 2 × X in a single minute.
+
+If the cow, unaware of its pursuit, does not move at all, how long does it take for Farmer John to retrieve it?
+ 
+
+Input
+Line 1: Two space-separated integers: N and K
+ 
+
+Output
+Line 1: The least amount of time, in minutes, it takes for Farmer John to catch the fugitive cow.
+ 
+
+Sample Input
+5 17
+ 
+
+Sample Output
+4
+
+Hint
+The fastest way for Farmer John to reach the fugitive cow is to move along the following path: 5-10-9-18-17, which takes 4 minutes.
+ 
+ 
+
+Source
+USACO 2007 Open Silver
+
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include<vector>
+#include <cmath>
+using namespace std;
+
+#define INF 0x3f3f3f3f
+#define maxn 100000+50
+
+int hash[maxn];
+bool visit[maxn];
+int N,K;
+
+void BFS()
+{
+    memset (visit,0,sizeof(visit));
+    queue < int > q;
+    q.push(N);
+    visit[N] = 1;
+    hash[N] = 0;      //刚开始的步数为0;
+    while(!q.empty())
+    {
+        int  temp;
+        temp = q.front();
+        q.pop();
+        if(temp+1 == K || temp-1 == K || temp*2 == K)
+        {
+            hash[K]= hash[temp]+1;
+            break;
+        }
+
+        if(temp-1 >= 0 && !visit[temp-1])
+        {
+            q.push(temp-1);       //放入队列
+            visit [temp-1] = 1;    //标记已经查找过得
+            hash[temp-1] = hash[temp] + 1;   //记录步数
+        }
+
+        if(temp+1 <= maxn && !visit [temp + 1])   //小于maxn防止越界.
+        {
+            q.push(temp + 1);
+            visit[temp + 1] = 1;
+            hash [temp + 1] = hash [temp]+ 1;
+        }
+
+        if(temp * 2 <= maxn && !visit [ temp * 2])
+        {
+            q.push(temp * 2);
+            visit [temp * 2] = 1;
+            hash [temp * 2] = hash [temp] + 1;
+
+        }
+    }
+}
+
+int main()
+{
+    while(cin >> N >> K)
+    {
+        if(N == K)
+        {
+            cout<< 0 << endl;
+            continue;
+        }
+        else
+            BFS();
+        cout << hash[K] << endl;
+    }
+    return 0;
+}
