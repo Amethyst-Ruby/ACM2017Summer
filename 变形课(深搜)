@@ -1,0 +1,102 @@
+hdu1181
+Time Limit:1000MS     Memory Limit:65536KB     64bit IO Format:%I64d & %I64u
+Submit
+ 
+Status
+  use MathJax to parse formulas
+Description
+呃......变形课上Harry碰到了一点小麻烦,因为他并不像Hermione那样能够记住所有的咒语而随意的将一个棒球变成刺猬什么的,但是他发现了变形咒语的一个统一规律:如果咒语是以a开头b结尾的一个单词,那么它的作用就恰好是使A物体变成B物体. 
+Harry已经将他所会的所有咒语都列成了一个表,他想让你帮忙计算一下他是否能完成老师的作业,将一个B(ball)变成一个M(Mouse),你知道,如果他自己不能完成的话,他就只好向Hermione请教,并且被迫听一大堆好好学习的道理. 
+ 
+Input
+测试数据有多组。每组有多行，每行一个单词,仅包括小写字母,是Harry所会的所有咒语.数字0表示一组输入结束. 
+ 
+Output
+如果Harry可以完成他的作业,就输出"Yes.",否则就输出"No."(不要忽略了句号) 
+ 
+Sample Input
+so
+soon
+river
+goes
+them
+got
+moon
+begin
+big
+0 
+ 
+Sample Output
+Yes.
+
+
+         
+Hint
+Hint  Harry 可以念这个咒语:"big-got-them".
+        
+
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include<vector>
+#include <cmath>
+using namespace std;
+
+#define INF 0x3f3f3f3f
+#define maxn 30
+
+char ch[100];
+int a[30][30];
+int visit[30];
+int flag;
+
+void DFS(int mark)  
+{  
+    if(mark=='m'-'a')  
+    {  
+        flag=1;return;  
+    }  
+    for(int i=0;i<26;i++)  
+    {  
+        if(!visit[i]&&a[mark][i])  
+        {  
+            visit[i]=1;  
+            DFS(i);  
+            if(flag) return;  
+        }  
+    }  
+}  
+
+int main()
+{
+    while(~scanf("%s",ch))
+    {
+        memset(a,0,sizeof a);
+        memset(visit,0,sizeof visit );
+        int x = ch[0] - 'a';
+        int y = ch[strlen(ch)-1] - 'a';
+        a[x][y] = 1;
+        while(scanf ("%s",ch) && ch[0] != '0')
+        {
+            flag = 0;
+            int x = ch [0] - 'a';
+            int y = ch [strlen(ch)-1]-'a';    //当时错在这里,注意一下
+            a[x][y] = 1;
+        }
+        visit [1] = 1;
+        DFS(1);
+        if(flag)
+            cout<<"Yes.\n";
+        else
+            cout<<"No.\n";
+    }
+    return 0;
+}
