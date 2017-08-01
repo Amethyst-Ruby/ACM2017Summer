@@ -1,0 +1,100 @@
+poj2386
+Time Limit:1000MS     Memory Limit:65536KB     64bit IO Format:%I64d & %I64u
+Submit
+ 
+Status
+  use MathJax to parse formulas
+Description
+Due to recent rains, water has pooled in various places in Farmer John's field, which is represented by a rectangle of N x M (1 <= N <= 100; 1 <= M <= 100) squares. Each square contains either water ('W') or dry land ('.'). Farmer John would like to figure out how many ponds have formed in his field. A pond is a connected set of squares with water in them, where a square is considered adjacent to all eight of its neighbors. 
+
+Given a diagram of Farmer John's field, determine how many ponds he has.
+Input
+* Line 1: Two space-separated integers: N and M 
+
+* Lines 2..N+1: M characters per line representing one row of Farmer John's field. Each character is either 'W' or '.'. The characters do not have spaces between them.
+Output
+* Line 1: The number of ponds in Farmer John's field.
+Sample Input
+10 12
+W........WW.
+.WWW.....WWW
+....WW...WW.
+.........WW.
+.........W..
+..W......W..
+.W.W.....WW.
+W.W.W.....W.
+.W.W......W.
+..W.......W.
+Sample Output
+3
+Hint
+OUTPUT DETAILS: 
+
+There are three ponds: one in the upper left, one in the lower left,and one along the right side.
+
+
+
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include<vector>
+#include <cmath>
+using namespace std;
+
+#define INF 0x3f3f3f3f
+#define maxn 50000+50
+#define MAX 100+10
+
+char map[MAX][MAX];
+int visit [MAX][MAX];
+
+void DFS(int x,int y)
+{
+    if(visit [x][y] == 1 || map[x][y] == '.' || map [x][y] == 0) return ;
+    visit[x][y] = 1;
+
+    DFS(x-1,y-1);
+    DFS(x-1,y);
+    DFS(x-1,y+1);
+    DFS(x,y-1);
+    DFS(x,y+1);
+    DFS(x+1,y-1);
+    DFS(x+1,y);
+    DFS(x+1,y+1);
+}
+
+
+int main()
+{
+    int m,n;
+    cin>>m>>n;
+    memset (map , 0 ,sizeof(map));
+    memset (visit ,0, sizeof(visit));
+    int sum = 0;
+    for(int i = 1;i <= m;i++)
+        for(int j = 1 ;j <= n ;j++)
+        {
+            cin>>map[i][j];       //将地图放在矩阵中间,方便判断是否出界.
+        }
+
+    for(int i = 1;i <= m;i++)
+        for(int j = 1;  j <= n; j++)
+        {
+            if(!visit[i][j] && map[i][j] == 'W')//若找到未被访问过的格子且当前格子是水  
+            {
+                sum++;
+                DFS(i,j);
+            }
+        }
+
+    cout<< sum <<endl;
+
+    return 0;
+
+}
