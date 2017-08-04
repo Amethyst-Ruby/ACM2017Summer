@@ -1,0 +1,133 @@
+fzu 1894
+
+D - 志愿者选拔
+Time Limit:1500MS     Memory Limit:32768KB     64bit IO Format:%I64d & %I64u
+Submit
+ 
+Status
+  use MathJax to parse formulas
+Description
+世博会马上就要开幕了，福州大学组织了一次志愿者选拔活动。 
+参加志愿者选拔的同学们排队接受面试官们的面试。参加面试的同学们按照先来先面试并且先结束的原则接受面试官们的考查。 
+面试中每个人的人品是主要考查对象之一。（提高人品的方法有扶老奶奶过街，不闯红灯等） 
+作为主面试官的John想知道当前正在接受面试的同学队伍中人品值最高的是多少。于是他请你帮忙编写一个程序来计算。
+Input
+输入数据第一行为一整数T，表示有T组输入数据。
+每组数据第一行为”START”，表示面试开始 
+接下来的数据中有三种情况： 
+输入	含义
+1	C NAME RP_VALUE	名字为NAME的人品值为RP_VALUE的同学加入面试队伍。(名字长度不大于5，0 <= RP_VALUE <= 1,000,000,000)
+2	G	排在面试队伍最前面的同学面试结束离开考场。
+3	Q	主面试官John想知道当前正在接受面试的队伍中人品最高的值是多少。
+最后一行为”END”，表示所有的面试结束，面试的同学们可以依次离开了。 
+所有参加面试的同学总人数不超过1,000,000 
+Output
+对于每个询问Q,输出当前正在接受面试的队伍中人品最高的值,如果当前没有人正在接受面试则输出-1。
+Sample Input
+2
+START
+C Tiny 1000000000
+C Lina 0
+Q
+G
+Q
+END
+START
+Q
+C ccQ 200
+C cxw 100
+Q
+G
+Q
+C wzc 500
+Q
+END
+Sample Output
+1000000000
+0
+-1
+200
+100
+500
+Hint
+数据较大建议使用scanf,printf 不推荐使用STL
+
+
+#include<iostream>
+#include<algorithm>
+#include<stdio.h>
+#include<string.h>
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <stack>
+#include<vector>
+#include <cmath>
+using namespace std;
+
+#define INF 0x3f3f3f3f
+#define maxn 1001
+
+struct node
+{
+    int pos;
+    int num;
+} lis[1000000+50];
+
+int main()
+{
+    int T;
+    scanf("%d",&T);
+    while( T-- )
+    {
+        char ch[5+5];
+        scanf("%s",&ch);
+        {
+            if(ch[0] == 'S')
+            {
+                int l = 1,r = 1;
+                int time = 0;
+                int clean = 1;
+                int t;
+                char c[10],name[10];
+
+                lis[1].num = 0;
+                lis[1].pos = 0;
+
+                while(scanf("%s",&c))
+                {
+                    if(!strcmp(c,"END"))
+                        break;
+                    if(c[0] == 'Q')
+                    {
+                        if(clean <= time) 
+                            cout << lis[l].num <<endl;
+                        else
+                            printf("-1\n");
+                    }
+                    if(c[0] == 'G')
+                    {
+                        if(clean == lis [l].pos)
+                            l++;
+                        clean++;
+                    }
+
+                    else if(c[0] == 'C')
+                    {
+                        scanf("%s %d",&name, &t);
+                        time++;
+                        while(t >= lis[r].num && r >= l)
+                        {
+                            r--;
+                        }
+                        r++;
+
+                        lis[r].num = t;
+                        lis[r].pos = time;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
+}
